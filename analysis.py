@@ -23,6 +23,19 @@ def lap_speed_comparision(session: Session, drivers: list[Driver], laps: list[in
     ax.legend()
     plt.show()
 
+def lap_speed_comparision_distance(session: Session, drivers: list[Driver], laps: list[int]):
+    fig, ax = plt.subplots()
+    for driver, lap in zip(drivers, laps):
+        lap_data = session.laps.pick_driver(driver.abbrevation).pick_lap(lap)
+        tel = lap_data.get_telemetry()
+        dist = tel['Distance']
+        vCar = tel['Speed']
+        ax.plot(dist, vCar, label=f'{driver.abbrevation} Lap {lap}', color=driver.color)
+    ax.set_xlabel('Distance [m]')
+    ax.set_ylabel('Speed [Km/h]')
+    ax.set_title('Lap Speed')
+    ax.legend()
+    plt.show()
 
 def lap_delta(session: Session, drivers: list[Driver], laps: list[int]):
     fig, ax = plt.subplots()

@@ -14,4 +14,6 @@ laps = [10,10]
 
 analysis.lap_speed_comparision(session, drivers, laps)
 
+analysis.lap_speed_comparision_distance(session, drivers, laps)
+
 analysis.lap_delta(session, drivers, laps)
