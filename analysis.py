@@ -42,10 +42,9 @@ def lap_delta(session: Session, drivers: list[Driver], laps: list[int]):
     ref_lap_data = session.laps.pick_driver(drivers[0].abbrevation).pick_lap(laps[0])
     for driver, lap in zip(drivers, laps):
         lap_data = session.laps.pick_driver(driver.abbrevation).pick_lap(lap)
-        car_data = lap_data.get_car_data()
         delta, ref_tel, comp_tel = utils.delta_time(ref_lap_data,lap_data)
         ax.plot(ref_tel['Distance'], delta, '--', label=f'{driver.abbrevation} Lap {lap}', color=driver.color)
-    ax.set_xlabel('Distance')
+    ax.set_xlabel('Distance [m]')
     ax.set_ylabel('Delta [s]')
     ax.set_title('Lap delta')
     ax.legend()
