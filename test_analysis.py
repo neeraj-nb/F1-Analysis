@@ -12,10 +12,13 @@ session.load()
 drivers = [Driver('SAI','red'), Driver('NOR','orange')]
 laps = [10,10]
 
-fig, ax = plt.subplots(3,1)
+fig, ax = plt.subplots(5,1)
+plt.suptitle("Australian Grand Prix")
 print(ax[0])
 analysis.lap_speed_comparision(session, drivers, laps, ax=ax[0])
 analysis.lap_delta(session, drivers, laps, ax=ax[1])
 analysis.lap_throttle(session, drivers, laps, ax=ax[2])
+analysis.lap_brake(session, drivers, laps, ax=ax[3])
+analysis.lap_gear(session, drivers, laps, ax=ax[4])
 
 plt.show()

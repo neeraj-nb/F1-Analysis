@@ -14,6 +14,7 @@ def lap_speed_comparision_time(session: Session, drivers: list[Driver], laps: li
         ax = kwargs["ax"]
     else:
         fig, ax = plt.subplots()
+        ax.set_title('Lap Speed')
     for driver, lap in zip(drivers, laps):
         lap_data = session.laps.pick_driver(driver.abbrevation).pick_lap(lap)
         car_data = lap_data.get_car_data()
@@ -22,7 +23,6 @@ def lap_speed_comparision_time(session: Session, drivers: list[Driver], laps: li
         ax.plot(time, vCar, label=f'{driver.abbrevation} Lap {lap}', color=driver.color)
     ax.set_xlabel('Time')
     ax.set_ylabel('Speed [Km/h]')
-    ax.set_title('Lap Speed')
     ax.legend()
 
 def lap_speed_comparision(session: Session, drivers: list[Driver], laps: list[int], **kwargs):
@@ -30,6 +30,7 @@ def lap_speed_comparision(session: Session, drivers: list[Driver], laps: list[in
         ax = kwargs["ax"]
     else:
         fig, ax = plt.subplots()
+        ax.set_title('Lap Speed')
     for driver, lap in zip(drivers, laps):
         lap_data = session.laps.pick_driver(driver.abbrevation).pick_lap(lap)
         tel = lap_data.get_telemetry()
@@ -38,7 +39,6 @@ def lap_speed_comparision(session: Session, drivers: list[Driver], laps: list[in
         ax.plot(dist, vCar, label=f'{driver.abbrevation} Lap {lap}', color=driver.color)
     ax.set_xlabel('Distance [m]')
     ax.set_ylabel('Speed [Km/h]')
-    ax.set_title('Lap Speed')
     ax.legend()
 
 def lap_delta(session: Session, drivers: list[Driver], laps: list[int], **kwargs):
@@ -46,6 +46,7 @@ def lap_delta(session: Session, drivers: list[Driver], laps: list[int], **kwargs
         ax = kwargs["ax"]
     else:
         fig, ax = plt.subplots()
+        ax.set_title('Lap delta')
     ref_lap_data = session.laps.pick_driver(drivers[0].abbrevation).pick_lap(laps[0])
     for driver, lap in zip(drivers, laps):
         lap_data = session.laps.pick_driver(driver.abbrevation).pick_lap(lap)
@@ -53,7 +54,6 @@ def lap_delta(session: Session, drivers: list[Driver], laps: list[int], **kwargs
         ax.plot(ref_tel['Distance'], delta, '--', label=f'{driver.abbrevation} Lap {lap}', color=driver.color)
     ax.set_xlabel('Distance [m]')
     ax.set_ylabel('Delta [s]')
-    ax.set_title('Lap delta')
     ax.legend()
 
 def lap_throttle(session: Session, drivers: list[Driver], laps: list[int], **kwargs):
@@ -61,6 +61,7 @@ def lap_throttle(session: Session, drivers: list[Driver], laps: list[int], **kwa
         ax = kwargs["ax"]
     else:
         fig, ax = plt.subplots()
+        ax.set_title('Throttle')
     for driver, lap in zip(drivers, laps):
         lap_data = session.laps.pick_driver(driver.abbrevation).pick_lap(lap)
         tel = lap_data.get_telemetry()
@@ -69,5 +70,36 @@ def lap_throttle(session: Session, drivers: list[Driver], laps: list[int], **kwa
         ax.plot(dist, throttle, label=f'{driver.abbrevation} Lap {lap}', color=driver.color)
     ax.set_xlabel('Distance [m]')
     ax.set_ylabel('Throttle [%]')
-    ax.set_title('Throttle')
+    ax.legend()
+
+def lap_gear(session: Session, drivers: list[Driver], laps: list[int], **kwargs):
+    if "ax" in kwargs:
+        ax = kwargs["ax"]
+    else:
+        fig, ax = plt.subplots()
+        ax.set_title('Gear')
+    for driver, lap in zip(drivers, laps):
+        lap_data = session.laps.pick_driver(driver.abbrevation).pick_lap(lap)
+        tel = lap_data.get_telemetry()
+        dist = tel['Distance']
+        gear = tel['nGear']
+        ax.plot(dist, gear, label=f'{driver.abbrevation} Lap {lap}', color=driver.color)
+    ax.set_xlabel('Distance [m]')
+    ax.set_ylabel('Gear')
+    ax.legend()
+
+def lap_brake(session: Session, drivers: list[Driver], laps: list[int], **kwargs):
+    if "ax" in kwargs:
+        ax = kwargs["ax"]
+    else:
+        fig, ax = plt.subplots()
+        ax.set_title('Brake')
+    for driver, lap in zip(drivers, laps):
+        lap_data = session.laps.pick_driver(driver.abbrevation).pick_lap(lap)
+        tel = lap_data.get_telemetry()
+        dist = tel['Distance']
+        brake = tel['Brake']
+        ax.plot(dist, brake, label=f'{driver.abbrevation} Lap {lap}', color=driver.color)
+    ax.set_xlabel('Distance [m]')
+    ax.set_ylabel('Brake')
     ax.legend()
