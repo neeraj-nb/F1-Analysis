@@ -8,7 +8,7 @@ class Driver:
         self.abbrevation = abbreviation
         self.color = color
 
-def lap_speed_comparision(session: Session, drivers: list[Driver], laps: list[int], **kwargs):
+def lap_speed_comparision_time(session: Session, drivers: list[Driver], laps: list[int], **kwargs):
     """Give driver comparision data"""
     if "ax" in kwargs:
         ax = kwargs["ax"]
@@ -25,7 +25,7 @@ def lap_speed_comparision(session: Session, drivers: list[Driver], laps: list[in
     ax.set_title('Lap Speed')
     ax.legend()
 
-def lap_speed_comparision_distance(session: Session, drivers: list[Driver], laps: list[int], **kwargs):
+def lap_speed_comparision(session: Session, drivers: list[Driver], laps: list[int], **kwargs):
     if "ax" in kwargs:
         ax = kwargs["ax"]
     else:
