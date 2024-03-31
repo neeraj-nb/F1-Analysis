@@ -18,6 +18,8 @@ analysis.lap_speed_comparision_distance(session, drivers, laps)
 
 analysis.lap_delta(session, drivers, laps)
 
+analysis.lap_throttle(session, drivers, laps)
+
 fig, ax = plt.subplots(1,2)
 print(ax[0])
 analysis.lap_speed_comparision(session, drivers, laps, ax=ax[0])

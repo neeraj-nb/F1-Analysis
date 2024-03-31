@@ -55,3 +55,19 @@ def lap_delta(session: Session, drivers: list[Driver], laps: list[int], **kwargs
     ax.set_ylabel('Delta [s]')
     ax.set_title('Lap delta')
     ax.legend()
+
+def lap_throttle(session: Session, drivers: list[Driver], laps: list[int], **kwargs):
+    if "ax" in kwargs:
+        ax = kwargs["ax"]
+    else:
+        fig, ax = plt.subplots()
+    for driver, lap in zip(drivers, laps):
+        lap_data = session.laps.pick_driver(driver.abbrevation).pick_lap(lap)
+        tel = lap_data.get_telemetry()
+        dist = tel['Distance']
+        throttle = tel['Throttle']
+        ax.plot(dist, throttle, label=f'{driver.abbrevation} Lap {lap}', color=driver.color)
+    ax.set_xlabel('Distance [m]')
+    ax.set_ylabel('Throttle [%]')
+    ax.set_title('Throttle')
+    ax.legend()
