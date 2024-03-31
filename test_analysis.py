@@ -12,15 +12,10 @@ session.load()
 drivers = [Driver('SAI','red'), Driver('NOR','orange')]
 laps = [10,10]
 
-analysis.lap_speed_comparision(session, drivers, laps)
-
-analysis.lap_delta(session, drivers, laps)
-
-analysis.lap_throttle(session, drivers, laps)
-
-fig, ax = plt.subplots(1,2)
+fig, ax = plt.subplots(3,1)
 print(ax[0])
 analysis.lap_speed_comparision(session, drivers, laps, ax=ax[0])
-analysis.lap_speed_comparision_time(session, drivers, laps, ax=ax[1])
+analysis.lap_delta(session, drivers, laps, ax=ax[1])
+analysis.lap_throttle(session, drivers, laps, ax=ax[2])
 
 plt.show()
