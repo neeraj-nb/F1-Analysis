@@ -8,9 +8,12 @@ class Driver:
         self.abbrevation = abbreviation
         self.color = color
 
-def lap_speed_comparision(session: Session, drivers: list[Driver], laps: list[int]):
+def lap_speed_comparision(session: Session, drivers: list[Driver], laps: list[int], **kwargs):
     """Give driver comparision data"""
-    fig, ax = plt.subplots()
+    if "ax" in kwargs:
+        ax = kwargs["ax"]
+    else:
+        fig, ax = plt.subplots()
     for driver, lap in zip(drivers, laps):
         lap_data = session.laps.pick_driver(driver.abbrevation).pick_lap(lap)
         car_data = lap_data.get_car_data()
@@ -21,10 +24,12 @@ def lap_speed_comparision(session: Session, drivers: list[Driver], laps: list[in
     ax.set_ylabel('Speed [Km/h]')
     ax.set_title('Lap Speed')
     ax.legend()
-    plt.show()
 
-def lap_speed_comparision_distance(session: Session, drivers: list[Driver], laps: list[int]):
-    fig, ax = plt.subplots()
+def lap_speed_comparision_distance(session: Session, drivers: list[Driver], laps: list[int], **kwargs):
+    if "ax" in kwargs:
+        ax = kwargs["ax"]
+    else:
+        fig, ax = plt.subplots()
     for driver, lap in zip(drivers, laps):
         lap_data = session.laps.pick_driver(driver.abbrevation).pick_lap(lap)
         tel = lap_data.get_telemetry()
@@ -35,10 +40,12 @@ def lap_speed_comparision_distance(session: Session, drivers: list[Driver], laps
     ax.set_ylabel('Speed [Km/h]')
     ax.set_title('Lap Speed')
     ax.legend()
-    plt.show()
 
-def lap_delta(session: Session, drivers: list[Driver], laps: list[int]):
-    fig, ax = plt.subplots()
+def lap_delta(session: Session, drivers: list[Driver], laps: list[int], **kwargs):
+    if "ax" in kwargs:
+        ax = kwargs["ax"]
+    else:
+        fig, ax = plt.subplots()
     ref_lap_data = session.laps.pick_driver(drivers[0].abbrevation).pick_lap(laps[0])
     for driver, lap in zip(drivers, laps):
         lap_data = session.laps.pick_driver(driver.abbrevation).pick_lap(lap)
@@ -48,4 +55,3 @@ def lap_delta(session: Session, drivers: list[Driver], laps: list[int]):
     ax.set_ylabel('Delta [s]')
     ax.set_title('Lap delta')
     ax.legend()
-    plt.show()

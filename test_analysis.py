@@ -1,6 +1,6 @@
 import fastf1
 import fastf1.plotting
-
+from matplotlib import pyplot as plt
 from analysis import Driver
 import analysis
 
@@ -17,3 +17,10 @@ analysis.lap_speed_comparision(session, drivers, laps)
 analysis.lap_speed_comparision_distance(session, drivers, laps)
 
 analysis.lap_delta(session, drivers, laps)
+
+fig, ax = plt.subplots(1,2)
+print(ax[0])
+analysis.lap_speed_comparision(session, drivers, laps, ax=ax[0])
+analysis.lap_speed_comparision_distance(session, drivers, laps, ax=ax[1])
+
+plt.show()
