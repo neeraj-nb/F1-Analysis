@@ -9,8 +9,8 @@ fastf1.plotting.setup_mpl()
 session = fastf1.get_session(2024, 'Australian Grand Prix', 'R')
 session.load()
 
-drivers = [Driver('SAI','red'), Driver('NOR','orange')]
-teams = [Team('Red Bull','RB','blue'), Team('Ferrari','SF','red')]
+drivers = [Driver('SAI','red',Team('Ferrari','SF','red')), Driver('NOR','orange',Team('McLaren','MC','orange'))]
+
 laps = [10,10]
 
 # fig, ax = plt.subplots(5,1)
@@ -22,6 +22,6 @@ laps = [10,10]
 # analysis.lap_brake(session, drivers, laps, ax=ax[3])
 # analysis.lap_gear(session, drivers, laps, ax=ax[4])
 
-analysis.rpm_v_speed(session, teams)
+analysis.rpm_v_speed(session, drivers)
 
 plt.show()

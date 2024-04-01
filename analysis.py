@@ -3,16 +3,17 @@ from fastf1.core import Session
 import numpy as np
 from matplotlib import pyplot as plt
 
-class Driver:
-    def __init__(self, abbreviation: str, color: str) -> None:
-        self.abbrevation = abbreviation
-        self.color = color
-
 class Team:
     def __init__(self, name: str, abbreviation: str, color: str) -> None:
         self.name = name
         self.abbrevation = abbreviation
         self.color = color
+
+class Driver:
+    def __init__(self, abbreviation: str, color: str, team: Team) -> None:
+        self.abbrevation = abbreviation
+        self.color = color
+        self.team = team
 
 def lap_speed_comparision_time(session: Session, drivers: list[Driver], laps: list[int], **kwargs):
     """Give driver comparision data"""
@@ -110,14 +111,14 @@ def lap_brake(session: Session, drivers: list[Driver], laps: list[int], **kwargs
     ax.set_ylabel('Brake')
     ax.legend()
 
-def rpm_v_speed(session: Session, teams: list[Team]):
+def rpm_v_speed(session: Session, drivers: list[Driver]):
     fig, ax = plt.subplots()
-    for team in teams:
-        data = session.laps.pick_teams(team.name)
+    for driver in drivers:
+        data = session.laps.pick_driver(driver.abbrevation)
         tel = data.get_telemetry()
         vCar = tel['Speed']
         rpm = tel['RPM']
-        ax.scatter(vCar, rpm, label=team.abbrevation, color=team.color, s=0.1)
+        ax.scatter(vCar, rpm, label=driver.team.abbrevation, color=driver.team.color, s=0.1)
     ax.set_xlabel('Speed [km/h]')
     ax.set_ylabel('RPM')
-    ax.legend()
+    ax.legend(markerscale=10)
