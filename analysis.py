@@ -8,6 +8,12 @@ class Driver:
         self.abbrevation = abbreviation
         self.color = color
 
+class Team:
+    def __init__(self, name: str, abbreviation: str, color: str) -> None:
+        self.name = name
+        self.abbrevation = abbreviation
+        self.color = color
+
 def lap_speed_comparision_time(session: Session, drivers: list[Driver], laps: list[int], **kwargs):
     """Give driver comparision data"""
     if "ax" in kwargs:
@@ -102,4 +108,16 @@ def lap_brake(session: Session, drivers: list[Driver], laps: list[int], **kwargs
         ax.plot(dist, brake, label=f'{driver.abbrevation} Lap {lap}', color=driver.color)
     ax.set_xlabel('Distance [m]')
     ax.set_ylabel('Brake')
+    ax.legend()
+
+def rpm_v_speed(session: Session, teams: list[Team]):
+    fig, ax = plt.subplots()
+    for team in teams:
+        data = session.laps.pick_teams(team.name)
+        tel = data.get_telemetry()
+        vCar = tel['Speed']
+        rpm = tel['RPM']
+        ax.scatter(vCar, rpm, label=team.abbrevation, color=team.color, s=0.1)
+    ax.set_xlabel('Speed [km/h]')
+    ax.set_ylabel('RPM')
     ax.legend()
