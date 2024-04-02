@@ -1,13 +1,17 @@
+import fastf1.plotting
 from fastf1 import utils
 from fastf1.core import Session
 import numpy as np
 from matplotlib import pyplot as plt
 
 class Team:
-    def __init__(self, name: str, abbreviation: str, color: str) -> None:
+    def __init__(self, name: str, abbreviation: str, color:str=None) -> None:
         self.name = name
         self.abbrevation = abbreviation
-        self.color = color
+        if color == None:
+            self.color = fastf1.plotting.team_color(name)
+        else:
+            self.color = color
 
 class Driver:
     def __init__(self, abbreviation: str, color: str, team: Team) -> None:
@@ -111,9 +115,9 @@ def lap_brake(session: Session, drivers: list[Driver], laps: list[int], **kwargs
     ax.set_ylabel('Brake')
     ax.legend()
 
-def rpm_v_speed(session: Session, drivers: list[Driver], **kawargs):
-    if "ax" in kawargs:
-        ax = kawargs["ax"]
+def rpm_v_speed(session: Session, drivers: list[Driver], **kwargs):
+    if "ax" in kwargs:
+        ax = kwargs["ax"]
     else:
         fig, ax = plt.subplots()
     for driver in drivers:
@@ -125,3 +129,18 @@ def rpm_v_speed(session: Session, drivers: list[Driver], **kawargs):
     ax.set_xlabel('Speed [km/h]')
     ax.set_ylabel('RPM')
     ax.legend(markerscale=10)
+
+def vTop_v_vMean(session: Session, teams: list[Team], **kwargs):
+    if "ax" in kwargs:
+        ax = kwargs["ax"]
+    else:
+        fig, ax = plt.subplots()
+    for team in teams:
+        data = session.laps.pick_teams(team.name).pick_fastest()
+        tel = data.get_telemetry()
+        vTop = np.max(tel['Speed'])
+        vMean = np.mean(tel['Speed'])
+        ax.scatter(vMean, vTop, label=team.abbrevation, color=team.color)
+    ax.set_xlabel('Mean Speed [km/h]')
+    ax.set_ylabel('Top Speed [km/h]')
+    ax.legend()
