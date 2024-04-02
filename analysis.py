@@ -12,6 +12,17 @@ class Team:
             self.color = fastf1.plotting.team_color(name)
         else:
             self.color = color
+    
+    @staticmethod
+    def all_teams():
+        all_team = []
+        teams = fastf1.plotting.TEAM_TRANSLATE.keys()
+        for team in teams:
+            name = fastf1.plotting.TEAM_TRANSLATE[team]
+            abbrevation = team
+            all_team.append(Team(name,abbrevation))
+        return all_team
+
 
 class Driver:
     def __init__(self, abbreviation: str, color: str, team: Team) -> None:
@@ -136,7 +147,7 @@ def vTop_v_vMean(session: Session, teams: list[Team], **kwargs):
     else:
         fig, ax = plt.subplots()
     for team in teams:
-        data = session.laps.pick_teams(team.name).pick_fastest()
+        data = session.laps.pick_teams(team.name).pick_quicklaps()
         tel = data.get_telemetry()
         vTop = np.max(tel['Speed'])
         vMean = np.mean(tel['Speed'])

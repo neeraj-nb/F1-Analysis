@@ -25,6 +25,6 @@ analysis.lap_gear(session, drivers, laps, ax=ax[4])
 fig, ax = plt.subplots()
 analysis.rpm_v_speed(session, drivers, ax=ax)
 
-analysis.vTop_v_vMean(session, [Team('Ferrari','SF'),Team('McLaren','MC')])
+analysis.vTop_v_vMean(session, [Team('Ferrari','SF')])
 
 plt.show()
