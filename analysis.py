@@ -111,8 +111,11 @@ def lap_brake(session: Session, drivers: list[Driver], laps: list[int], **kwargs
     ax.set_ylabel('Brake')
     ax.legend()
 
-def rpm_v_speed(session: Session, drivers: list[Driver]):
-    fig, ax = plt.subplots()
+def rpm_v_speed(session: Session, drivers: list[Driver], **kawargs):
+    if "ax" in kawargs:
+        ax = kawargs["ax"]
+    else:
+        fig, ax = plt.subplots()
     for driver in drivers:
         data = session.laps.pick_driver(driver.abbrevation)
         tel = data.get_telemetry()
