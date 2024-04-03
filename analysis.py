@@ -146,12 +146,11 @@ def vTop_v_vMean(session: Session, teams: list[Team], **kwargs):
         ax = kwargs["ax"]
     else:
         fig, ax = plt.subplots()
-    for team in teams:
-        data = session.laps.pick_teams(team.name).pick_quicklaps()
-        tel = data.get_telemetry()
-        vTop = np.max(tel['Speed'])
-        vMean = np.mean(tel['Speed'])
-        ax.scatter(vMean, vTop, label=team.abbrevation, color=team.color)
+
+    data = session.laps.pick_quicklaps()
+    teams = data.groupby('Team')
+    color_palate ={team: fastf1.plotting.team_color(team) for team in teams}
+    ax.scatter(np.mean(teams['Speed']), np.max(teams['Speed']), label=teams['Team'], color=color_palate)
     ax.set_xlabel('Mean Speed [km/h]')
     ax.set_ylabel('Top Speed [km/h]')
     ax.legend()
