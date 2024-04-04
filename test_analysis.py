@@ -27,4 +27,5 @@ analysis.rpm_v_speed(session, drivers, ax=ax)
 
 analysis.vTop_v_vMean(session, [Team('Ferrari','SF',ref_driver='SAI'),Team('Mercedes','MER',ref_driver='HAM')])
 
+analysis.race_pace(session)
 plt.show()

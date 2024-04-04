@@ -3,6 +3,7 @@ from fastf1 import utils
 from fastf1.core import Session
 import numpy as np
 from matplotlib import pyplot as plt
+import seaborn as sns
 
 class Team:
     def __init__(self, name: str, abbreviation: str, color:str=None, ref_driver=None) -> None:
@@ -155,3 +156,32 @@ def vTop_v_vMean(session: Session, teams: list[Team], **kwargs):
     ax.set_xlabel('Mean Speed [km/h]')
     ax.set_ylabel('Top Speed [km/h]')
     ax.legend()
+
+def race_pace(session: Session):
+    laps = session.laps.pick_quicklaps()
+    transformed_laps = laps.copy()
+    transformed_laps.loc[:,"LapTime (s)"] = laps["LapTime"].dt.total_seconds()
+    team_order = (
+        transformed_laps[["Team", "LapTime (s)"]]
+        .groupby("Team")
+        .median()["LapTime (s)"]
+        .sort_values()
+        .index
+    )
+    team_palette = {team: fastf1.plotting.team_color(team) for team in team_order}
+    fig, ax = plt.subplots(figsize=(15, 10))
+    sns.boxplot(
+    data=transformed_laps,
+    x="Team",
+    y="LapTime (s)",
+    hue="Team",
+    order=team_order,
+    palette=team_palette,
+    whiskerprops=dict(color="white"),
+    boxprops=dict(edgecolor="white"),
+    medianprops=dict(color="grey"),
+    capprops=dict(color="white"),
+    )
+    plt.grid(visible=False)
+    ax.set(xlabel=None)
+    plt.tight_layout()
