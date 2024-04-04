@@ -5,13 +5,14 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 class Team:
-    def __init__(self, name: str, abbreviation: str, color:str=None) -> None:
+    def __init__(self, name: str, abbreviation: str, color:str=None, ref_driver=None) -> None:
         self.name = name
         self.abbrevation = abbreviation
         if color == None:
             self.color = fastf1.plotting.team_color(name)
         else:
             self.color = color
+        self.ref_driver = ref_driver
     
     @staticmethod
     def all_teams():
@@ -147,10 +148,10 @@ def vTop_v_vMean(session: Session, teams: list[Team], **kwargs):
     else:
         fig, ax = plt.subplots()
 
-    data = session.laps.pick_quicklaps()
-    teams = data.groupby('Team')
-    color_palate ={team: fastf1.plotting.team_color(team) for team in teams}
-    ax.scatter(np.mean(teams['Speed']), np.max(teams['Speed']), label=teams['Team'], color=color_palate)
+    for team in teams:
+        data = session.laps.pick_driver(team.ref_driver).pick_fastest()
+        tel = data.get_telemetry()
+        ax.scatter(np.mean(tel['Speed']), np.max(tel['Speed']), label=team.abbrevation, color=team.color)
     ax.set_xlabel('Mean Speed [km/h]')
     ax.set_ylabel('Top Speed [km/h]')
     ax.legend()
