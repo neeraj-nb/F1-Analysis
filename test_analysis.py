@@ -23,12 +23,17 @@ analysis.lap_brake(session, drivers, laps, ax=ax[3])
 analysis.lap_gear(session, drivers, laps, ax=ax[4])
 
 fig, ax = plt.subplots()
+plt.suptitle("Australian Grand Prix")
 analysis.rpm_v_speed(session, drivers, ax=ax)
 
 analysis.vTop_v_vMean(session, [Team('Ferrari','SF',ref_driver='SAI'),Team('Mercedes','MER',ref_driver='HAM')])
+plt.suptitle("Australian Grand Prix")
 
 analysis.race_pace(session)
+plt.suptitle("Australian Grand Prix")
 
 drivers = [Driver('SAI','red',Team('Ferrari','SF')), Driver('NOR','orange',Team('McLaren','MC')),Driver('RUS','blue',Team('Mercedes','MERC'))]
 analysis.laptime_vs_lap(session, drivers)
+plt.suptitle("Australian Grand Prix")
+
 plt.show()
