@@ -185,3 +185,14 @@ def race_pace(session: Session):
     plt.grid(visible=False)
     ax.set(xlabel=None)
     plt.tight_layout()
+
+def laptime_vs_lap(session: Session, drivers: list[Driver], **kwargs):
+    fig, ax = plt.subplots()
+    for driver in drivers:
+        laps = session.laps.pick_drivers(driver.abbrevation).pick_track_status('1','equals')
+        transformed_laps = laps.copy()
+        transformed_laps.loc[:,"LapTime (s)"] = laps["LapTime"].dt.total_seconds()
+        ax.plot(transformed_laps["LapNumber"],transformed_laps["LapTime (s)"],'-o',label=driver.abbrevation,color=driver.color)
+    ax.set_xlabel('Lap')
+    ax.set_ylabel('Lap Time [s]')
+    ax.legend()
