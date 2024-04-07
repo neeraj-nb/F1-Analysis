@@ -26,7 +26,18 @@ fig, ax = plt.subplots()
 plt.suptitle("Australian Grand Prix")
 analysis.rpm_v_speed(session, drivers, ax=ax)
 
-analysis.vTop_v_vMean(session, [Team('Ferrari','SF',ref_driver='SAI'),Team('Mercedes','MER',ref_driver='HAM')])
+all_teams = [Team('Ferrari','SF',ref_driver='SAI'),
+             Team('Mercedes','MER',ref_driver='HAM'),
+             Team('McLaren','MCL',ref_driver='NOR'),
+             Team('Red Bull','RBR',ref_driver='VER'),
+             Team('RB','RB',ref_driver='TSU'),
+             Team('Sauber','SUB',ref_driver='BOT'),
+             Team('Alpine','ALP',ref_driver='GAS'),
+             Team('Hass','HAS',ref_driver='MAG'),
+             Team('Willams','WR',ref_driver='ALB'),
+             Team('Aston Martin','ASM',ref_driver='STR'),
+             ]
+analysis.vTop_v_vMean(session, all_teams)
 plt.suptitle("Australian Grand Prix")
 
 analysis.race_pace(session)
