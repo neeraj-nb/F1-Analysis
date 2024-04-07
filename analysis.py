@@ -4,6 +4,7 @@ from fastf1.core import Session
 import numpy as np
 from matplotlib import pyplot as plt
 import seaborn as sns
+from utils import fuel_corrected_laptime
 
 class Team:
     def __init__(self, name: str, abbreviation: str, color:str=None, ref_driver=None) -> None:
@@ -192,6 +193,19 @@ def laptime_vs_lap(session: Session, drivers: list[Driver], **kwargs):
         laps = session.laps.pick_drivers(driver.abbrevation).pick_track_status('1','equals')
         transformed_laps = laps.copy()
         transformed_laps.loc[:,"LapTime (s)"] = laps["LapTime"].dt.total_seconds()
+        ax.plot(transformed_laps["LapNumber"],transformed_laps["LapTime (s)"],'-o',label=driver.abbrevation,color=driver.color)
+    ax.set_xlabel('Lap')
+    ax.set_ylabel('Lap Time [s]')
+    ax.legend()
+
+def fc_laptime_vs_lap(session: Session, drivers: list[Driver], **kwargs):
+    fig, ax = plt.subplots()
+    for driver in drivers:
+        laps = session.laps.pick_drivers(driver.abbrevation).pick_track_status('1','equals')
+        transformed_laps = laps.copy()
+        fuel_corrected_lap_time = fuel_corrected_laptime(transformed_laps['LapTime'], session.total_laps)
+        transformed_laps.loc[:,"LapTime"] = fuel_corrected_lap_time
+        transformed_laps.loc[:,"LapTime (s)"] = transformed_laps["LapTime"].dt.total_seconds()
         ax.plot(transformed_laps["LapNumber"],transformed_laps["LapTime (s)"],'-o',label=driver.abbrevation,color=driver.color)
     ax.set_xlabel('Lap')
     ax.set_ylabel('Lap Time [s]')
