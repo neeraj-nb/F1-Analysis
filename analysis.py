@@ -28,10 +28,32 @@ class Team:
 
 
 class Driver:
-    def __init__(self, abbreviation: str, color: str, team: Team) -> None:
+    def __init__(self, abbreviation: str, color: str, team: Team=None) -> None:
         self.abbrevation = abbreviation
         self.color = color
         self.team = team
+    
+    @staticmethod
+    def all_drivers():
+        all_driver = []
+        drivers = fastf1.plotting.DRIVER_TRANSLATE.keys()
+        for driver in drivers:
+            name = fastf1.plotting.DRIVER_TRANSLATE[driver]
+            abbrevation = driver
+            color = fastf1.plotting.DRIVER_COLORS[name]
+            all_driver.append(Driver(abbrevation,color))
+        return all_driver
+    
+    @staticmethod
+    def all_session_drivers(session: Session):
+        all_driver = []
+        drivers = [session.get_driver(driver)['Abbreviation'] for driver in session.drivers]
+        for driver in drivers:
+            name = fastf1.plotting.DRIVER_TRANSLATE[driver]
+            abbrevation = driver
+            color = fastf1.plotting.DRIVER_COLORS[name]
+            all_driver.append(Driver(abbrevation,color))
+        return all_driver
 
 def lap_speed_comparision_time(session: Session, drivers: list[Driver], laps: list[int], **kwargs):
     """Give driver comparision data"""
@@ -193,7 +215,7 @@ def laptime_vs_lap(session: Session, drivers: list[Driver], **kwargs):
         laps = session.laps.pick_drivers(driver.abbrevation).pick_track_status('1','equals')
         transformed_laps = laps.copy()
         transformed_laps.loc[:,"LapTime (s)"] = laps["LapTime"].dt.total_seconds()
-        ax.plot(transformed_laps["LapNumber"],transformed_laps["LapTime (s)"],'-o',label=driver.abbrevation,color=driver.color)
+        ax.plot(transformed_laps["LapNumber"],transformed_laps["LapTime (s)"],'-o',label=driver.abbrevation,color=driver.color,lw=0.7,markersize=2)
     ax.set_xlabel('Lap')
     ax.set_ylabel('Lap Time [s]')
     ax.legend()
@@ -206,7 +228,7 @@ def fc_laptime_vs_lap(session: Session, drivers: list[Driver], **kwargs):
         fuel_corrected_lap_time = fuel_corrected_laptime(transformed_laps['LapTime'], session.total_laps)
         transformed_laps.loc[:,"LapTime"] = fuel_corrected_lap_time
         transformed_laps.loc[:,"LapTime (s)"] = transformed_laps["LapTime"].dt.total_seconds()
-        ax.plot(transformed_laps["LapNumber"],transformed_laps["LapTime (s)"],'-o',label=driver.abbrevation,color=driver.color)
+        ax.plot(transformed_laps["LapNumber"],transformed_laps["LapTime (s)"],'-o',label=driver.abbrevation,color=driver.color,lw=0.7,markersize=2)
     ax.set_xlabel('Lap')
     ax.set_ylabel('Lap Time [s]')
     ax.legend()

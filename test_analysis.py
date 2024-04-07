@@ -46,6 +46,7 @@ plt.suptitle("Australian Grand Prix")
 drivers = [Driver('SAI','red',Team('Ferrari','SF')), Driver('NOR','orange',Team('McLaren','MC')),Driver('RUS','blue',Team('Mercedes','MERC'))]
 analysis.laptime_vs_lap(session, drivers)
 analysis.fc_laptime_vs_lap(session, drivers)
+analysis.laptime_vs_lap(session, Driver.all_session_drivers(session))
 plt.suptitle("Australian Grand Prix")
 
 plt.show()
