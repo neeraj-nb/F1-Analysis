@@ -41,6 +41,7 @@ analysis.vTop_v_vMean(session, all_teams)
 plt.suptitle("Australian Grand Prix")
 
 analysis.race_pace(session)
+plt.suptitle("Australian Grand Prix")
 analysis.driver_race_pace(session)
 plt.suptitle("Australian Grand Prix")
 
