@@ -209,6 +209,35 @@ def race_pace(session: Session):
     ax.set(xlabel=None)
     plt.tight_layout()
 
+def driver_race_pace(session: Session):
+    laps = session.laps.pick_quicklaps()
+    transformed_laps = laps.copy()
+    transformed_laps.loc[:,"LapTime (s)"] = laps["LapTime"].dt.total_seconds()
+    driver_order = (
+        transformed_laps[["Driver", "LapTime (s)"]]
+        .groupby("Driver")
+        .median()["LapTime (s)"]
+        .sort_values()
+        .index
+    )
+    driver_palette = {driver: fastf1.plotting.driver_color(driver) for driver in driver_order}
+    fig, ax = plt.subplots(figsize=(15, 10))
+    sns.boxplot(
+    data=transformed_laps,
+    x="Driver",
+    y="LapTime (s)",
+    hue="Driver",
+    order=driver_order,
+    palette=driver_palette,
+    whiskerprops=dict(color="white"),
+    boxprops=dict(edgecolor="white"),
+    medianprops=dict(color="grey"),
+    capprops=dict(color="white"),
+    )
+    plt.grid(visible=False)
+    ax.set(xlabel=None)
+    plt.tight_layout()
+
 def laptime_vs_lap(session: Session, drivers: list[Driver], **kwargs):
     fig, ax = plt.subplots()
     for driver in drivers:
